@@ -16,10 +16,9 @@ typedef struct{
     int prioridade;
 
 } Alimento;
-
+// cálculo de data
 int calcular_dias(int dia, int mes, int ano) {
     time_t agora = time(NULL); // para poder pega a data e hora atual do sistema
-    
     struct tm t = {0}; // struct da biblioteca de tempo time.h
     t.tm_mday = dia;
     t.tm_mon = mes - 1; // meses de 0 a 11, sendo janeiro=0
