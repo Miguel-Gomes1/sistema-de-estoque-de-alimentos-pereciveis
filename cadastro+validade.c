@@ -204,7 +204,7 @@ int main() {
 
     // Salvamento automático ao sair
     salvar_estoque(lista_estoque, total_produtos);
-    printf("\nEncerrando o sistema FRESHGUARD. Você tem %d produtos no estoque.\n", total_produtos);
+    printf("\nEncerrando o sistema. Você tem %d produtos no estoque.\n", total_produtos);
 
     return 0;
 }
