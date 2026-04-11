@@ -160,7 +160,7 @@ void salvar_estoque(Alimento estoque[], int total) {
         return;
     }
     // Escreve o cabeçalho
-    fprintf(arquivo, "%-4s %49[^ ] %-12s %-10s %-12s %-15s %-10s %s\n",
+    fprintf(arquivo, "%-4s %-15s %-12s %-10s %-12s %-15s %-10s %s\n",
             "ID", "Nome", "Categoria", "Qtd", "Preco(R$)", "Validade", "Status", "Dias");
     fprintf(arquivo, "--------------------------------------------------------------------------------------------\n");
 
