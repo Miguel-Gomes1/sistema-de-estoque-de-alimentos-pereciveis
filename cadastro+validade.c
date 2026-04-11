@@ -153,7 +153,6 @@ void excluir_produtos(Alimento estoque[], int *total) {
 
     for (int i = 0; i < *total; i++) {
         if (estoque[i].codigo == codigo) {
-            // ✅ CORRIGIDO: variáveis consistentes, índice correto
             for (int j = i; j < *total - 1; j++)
                 estoque[j] = estoque[j + 1];
             (*total)--;
@@ -165,8 +164,6 @@ void excluir_produtos(Alimento estoque[], int *total) {
     }
     printf("\nProduto com ID %d nao encontrado.\n", codigo);
 }
-
-// ✅ CORRIGIDO: lê o arquivo corretamente com fgets/sscanf
 void carregar_estoque(Alimento estoque[], int *total) {
     FILE *arquivo = fopen("estoque.txt", "r");
     if (arquivo == NULL) {
