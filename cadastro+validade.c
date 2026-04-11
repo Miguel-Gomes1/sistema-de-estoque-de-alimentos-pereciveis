@@ -160,7 +160,7 @@ void salvar_estoque(Alimento estoque[], int total) {
         return;
     }
     // Escreve o cabeçalho
-    fprintf(arquivo, "%-4s %-15s %-12s %-10s %-12s %-15s %-10s %s\n",
+    fprintf(arquivo, "%-4s %49[^ ] %-12s %-10s %-12s %-15s %-10s %s\n",
             "ID", "Nome", "Categoria", "Qtd", "Preco(R$)", "Validade", "Status", "Dias");
     fprintf(arquivo, "--------------------------------------------------------------------------------------------\n");
 
@@ -175,12 +175,63 @@ void salvar_estoque(Alimento estoque[], int total) {
     fclose(arquivo);
     printf("\n[SUCESSO] Arquivo salvo com sucesso, salvo em 'estoque.txt'.\n");
 }
+// função para excluir produtos
+void excluir_produtos(Alimento estoque[], int *total){
+    //verificar o estoque esta != 0
+    if(*total == 0){
+        printf("\n O estoque esta vazio! Nada para excluir.\n");
+        return;
+    }
+    // busca o produto baseado no ID
+    int codigo;
+    printf("\n Digite o código do produto a ser excluido: ");
+    scanf("%d", &codigo);
+    while (getchar() != '\n');
 
+    for(int i = 0; i < *total; i++){
+        if (estoque[i].codigo == codigo){
+
+            // Desloca todos os elementos após o encontrado
+             for(int j = i; j < *total - 1; j++){
+            estoque[j] = estoque[j + 1];
+        }
+        (*total)--;
+            printf("\n Produto com ID %d foi excluido. \n", codigo);
+            return;
+           
+        }
+        
+    }
+     printf("\n produto com ID %d não encontrado. \n", codigo);
+
+}
+// havia um problema para carregar o estoque ao sair
+void carregar_estoque(Alimento estoque[], int *total){
+    FILE *arquivo = fopen("estoque.txt", "w");
+    if (arquivo == NULL) {
+        printf("\n[Erro] Não foi possível abrir o arquivo.\n");
+        return;
+    }
+
+    // Cabeçalho
+    fprintf(arquivo, "ID,Nome,Categoria,Quantidade,Preco,Validade,Dias,Prioridade\n");
+
+    for (int i = 0; i < total; i++) {
+        Alimento a = estoque[i];
+        fprintf(arquivo, "%d,%s,%s,%d,%.2f,%02d/%02d/%04d,%d,%d\n",
+                a.codigo, a.nome, a.categoria, a.quantidade, a.preco,
+                a.dia, a.mes, a.ano, a.dias_restantes, a.prioridade);
+    }
+
+    fclose(arquivo);
+    printf("\n[SUCESSO] Arquivo salvo em 'estoque.txt'.\n");
+}
 // Função principal
 int main() {
     setlocale(LC_ALL, "portuguese");
     Alimento lista_estoque[MAX];
     int total_produtos = 0;
+    carregar_estoque(lista_estoque, &total_produtos);
     int opcao;
 
     do {
@@ -189,6 +240,7 @@ int main() {
         printf("2. Listar Todos os Produtos\n");
         printf("3. Localizar Produto (Busca)\n");
         printf("4. Salvar arquivo em .TXT\n");
+        printf("5. Excluir Produtos\n");
         printf("0. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -198,13 +250,12 @@ int main() {
         else if (opcao == 2) listar(lista_estoque, total_produtos);
         else if (opcao == 3) buscar_produto(lista_estoque, total_produtos);
         else if (opcao == 4) salvar_estoque(lista_estoque, total_produtos);
+        else if (opcao == 5) excluir_produtos(lista_estoque, &total_produtos);       
         else if (opcao != 0) printf("\n[ERRO] Opcao invalida!\n");
 
     } while (opcao != 0);
 
-    // Salvamento automático ao sair
-    salvar_estoque(lista_estoque, total_produtos);
-    printf("\nEncerrando o sistema. Você tem %d produtos no estoque.\n", total_produtos);
+    printf("\nEncerrando o sistema. Voce tem %d produtos no estoque.\n", total_produtos);
 
     return 0;
 }
